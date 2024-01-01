@@ -6,11 +6,13 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/horlathunbhosun/events-rest-api/internal/utility"
+	"github.com/joho/godotenv"
 )
 
 var DB *sql.DB
 
 func InitDB() {
+	godotenv.Load()
 	connStr, dbServer := utility.ConnectionStringAndDriver()
 	var err error
 
