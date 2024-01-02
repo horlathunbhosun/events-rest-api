@@ -15,7 +15,7 @@ type User struct {
 	DatedCreated time.Time
 }
 
-func (u User) Save() error {
+func (u *User) Save() error {
 	u.DatedCreated = time.Now()
 	query := `INSERT INTO users(email,password, datecreated) 
 		VALUES (?,?,?)`
@@ -39,7 +39,7 @@ func (u User) Save() error {
 	return err
 }
 
-func (u User) ValidateUserCredential() error {
+func (u *User) ValidateUserCredential() error {
 	query := "SELECT id,password FROM users WHERE email=?"
 
 	row := db.DB.QueryRow(query, u.Email)

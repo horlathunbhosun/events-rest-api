@@ -39,6 +39,7 @@ func GetSingleEventById(ctx *gin.Context) {
 }
 
 func CreateEvents(ctx *gin.Context) {
+
 	var event models.Event
 	err := ctx.ShouldBindJSON(&event)
 
@@ -47,9 +48,7 @@ func CreateEvents(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "something went wrong"})
 		return
 	}
-
-	event.ID = 1
-	event.UserId = 1
+	event.UserId = ctx.GetInt64("userId")
 
 	err = event.Save()
 
@@ -75,6 +74,12 @@ func UpdateEvent(ctx *gin.Context) {
 		return
 	}
 
+	if eventData.UserId != ctx.GetInt64("UserId") {
+		fmt.Println(err)
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "You can not update this event"})
+		return
+	}
+
 	var updateEvent models.Event
 	err = ctx.ShouldBindJSON(&updateEvent)
 	if err != nil {
@@ -84,7 +89,6 @@ func UpdateEvent(ctx *gin.Context) {
 	}
 
 	updateEvent.ID = eventId
-	updateEvent.UserId = eventData.UserId
 	err = updateEvent.Update()
 	if err != nil {
 		fmt.Println(err)
@@ -105,6 +109,12 @@ func DeleteEvent(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "Event id does not exist."})
+		return
+	}
+
+	if eventData.UserId != ctx.GetInt64("UserId") {
+		fmt.Println(err)
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "You can not delete this event"})
 		return
 	}
 
