@@ -8,14 +8,16 @@ import (
 
 type Event struct {
 	ID          int64
-	Name        string    `binding:"required"`
-	Description string    `binding:"required"`
-	Location    string    `binding:"required"`
-	DateTime    time.Time `binding:"required"`
+	Name        string `binding:"required"`
+	Description string `binding:"required"`
+	Location    string `binding:"required"`
+	DateTime    time.Time
 	UserId      int
 }
 
-var events = []Event{}
+// var events = []Event{}
+
+var dateTime = time.Now()
 
 func (e Event) Save() error {
 	query := `INSERT INTO events(name,description,location,dateTime,user_id) 
@@ -25,7 +27,7 @@ func (e Event) Save() error {
 		return err
 	}
 	defer stmt.Close()
-	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserId)
+	result, err := stmt.Exec(e.Name, e.Description, e.Location, dateTime, e.UserId)
 	if err != nil {
 		return err
 	}
@@ -88,7 +90,7 @@ func (e Event) Update() error {
 		return err
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.ID)
+	_, err = stmt.Exec(e.Name, e.Description, e.Location, dateTime, e.ID)
 	return err
 
 }

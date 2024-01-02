@@ -32,7 +32,7 @@ func createTables() {
 	createUsersTable := `
 	CREATE TABLE IF NOT EXISTS users(
 		id INTEGER PRIMARY KEY AUTO_INCREMENT,
-		email TEXT NOT NULL,
+		email TEXT NOT NULL UNIQUE,
 		password TEXT NOT NULL,
 		datecreated DATETIME
 	)
@@ -40,7 +40,7 @@ func createTables() {
 	_, err := DB.Exec(createUsersTable)
 	if err != nil {
 		log.Fatalln(err)
-		panic("Can not users  table")
+		panic("Can not users table")
 	}
 
 	createEventsTable := `
