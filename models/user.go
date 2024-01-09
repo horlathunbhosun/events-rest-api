@@ -20,7 +20,7 @@ func (u *User) Save() error {
 	query := `INSERT INTO users(email,password, datecreated) 
 		VALUES (?,?,?)`
 	stmt, err := db.DB.Prepare(query)
-	if err != nil {
+	if err != nil { 
 		return err
 	}
 	defer stmt.Close()

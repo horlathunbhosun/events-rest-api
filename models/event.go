@@ -15,8 +15,6 @@ type Event struct {
 	UserId      int64
 }
 
-// var events = []Event{}
-
 var dateTime = time.Now()
 
 func (e *Event) Save() error {
